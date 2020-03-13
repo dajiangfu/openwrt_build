@@ -61,44 +61,44 @@ function comre_build_openwrt(){
 }
 
 start_menu(){
-    clear
-    green " ===================================="
-    green " 介绍：一键编译openwrt(lede版)源码   "
-    green " 系统：>=ubuntu14.0                  "
-    green " 作者：dajiangfu                     "
-    green " 网站：www.github.com/dajiangfu      "
-    green " ===================================="
-    echo
-    green " 1. 初次编译"
-    green " 2. 重新编译"
-    green " 3. 修复并编译(make clean)"
-    green " 4. 完全重新编译(make distclean)"
-    blue " 0. 退出脚本"
-    echo
-    read -p "请输入数字:" num
-    case "$num" in
-    1)
-    build_openwrt
-    ;;
-    2)
-    rebuild_openwrt 
-    ;;
-    3)
-    repair_build_openwrt
-    ;;
-    4)
-    comre_build_openwrt
-    ;;
-    0)
-    exit 1
-    ;;
-    *)
-    clear
-    red "请输入正确数字"
-    sleep 1s
-    start_menu
-    ;;
-    esac
+  clear
+  green " ===================================="
+  green " 介绍：一键编译openwrt(lede版)源码   "
+  green " 系统：>=ubuntu14.0                  "
+  green " 作者：dajiangfu                     "
+  green " 网站：www.github.com/dajiangfu      "
+  green " ===================================="
+  echo
+  green " 1. 初次编译"
+  green " 2. 重新编译"
+  green " 3. 修复并编译(make clean)"
+  green " 4. 完全重新编译(make distclean)"
+  blue " 0. 退出脚本"
+  echo
+  read -p "请输入数字:" num
+  case "$num" in
+  1)
+  build_openwrt
+  ;;
+  2)
+  rebuild_openwrt 
+  ;;
+  3)
+  repair_build_openwrt
+  ;;
+  4)
+  comre_build_openwrt
+  ;;
+  0)
+  exit 1
+  ;;
+  *)
+  clear
+  red "请输入正确数字"
+  sleep 1s
+  start_menu
+  ;;
+  esac
 }
 
 start_menu
