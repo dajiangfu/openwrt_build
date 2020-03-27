@@ -19,6 +19,7 @@ function build_openwrt(){
   ./scripts/feeds update -a
   ./scripts/feeds install -a
   make menuconfig
+  make -j8 download V=s
   make -j1 V=s
 }
 
@@ -28,13 +29,20 @@ function rebuild_openwrt(){
   git pull
   ./scripts/feeds update -a
   ./scripts/feeds install -a
-  rm -rf ./tmp
-  rm -rf .config
-  make menuconfig
-  make -j1 V=s
+  read -p "是否重新配置 ?请输入 [Y/n] :" yn
+  [ -z "${yn}" ] && yn="y"
+  if [[ $yn == [Yy] ]]; then
+    rm -rf ./tmp
+    rm -rf .config
+    make menuconfig
+  else
+    make defconfig
+  fi
+  make -j8 download V=s
+  make -j$(($(nproc) + 1)) V=s
 }
 
-#修复并编译(make clean)
+#修复并编译(make clean仅仅是清除之前编译的可执行文件及配置文件)
 function repair_build_openwrt(){
   cd lede
   make clean
@@ -44,10 +52,11 @@ function repair_build_openwrt(){
   rm -rf ./tmp
   rm -rf .config
   make menuconfig
-  make -j1 V=s
+  make -j8 download V=s
+  make -j$(($(nproc) + 1)) V=s
 }
 
-#完全重新编译(make distclean)
+#完全重新编译(make distclean要清除所有生成的文件)
 function comre_build_openwrt(){
   cd lede
   make distclean
@@ -57,6 +66,7 @@ function comre_build_openwrt(){
   rm -rf ./tmp
   rm -rf .config
   make menuconfig
+  make -j8 download V=s
   make -j1 V=s
 }
 
