@@ -16,11 +16,11 @@ function add_user(){
   sudo useradd -r -m -s /bin/bash cloud
   #给用户cloud添加一个密码
   sudo passwd cloud
-  #编辑用户权限
+  #编辑用户权限，因/etc/sudoers文件默认是只读文件，因此需先添加sudoers文件的写权限
   sudo chmod +w /etc/sudoers
+  #编辑 sudoers 文件，按i进入编辑模式，在User privilege specification的root ALL=(ALL) ALL一行下面加入cloud ALL=(ALL:ALL) ALL然后按esc后输入:wq保存并退出 vim 编辑器
   sudo vim /etc/sudoers
-  #按i进入编辑模式，在User privilege specification的root一行下面加入cloud ALL=(ALL:ALL) ALL然后按esc后输入:wq保存并退出 vim 编辑器
-  #去掉w权限
+  #安全考虑建议撤销sudoers文件写权限
   sudo chmod -w /etc/sudoers
   #切换到刚才创建的新用户（两次输入su cloud，输入密码不会显示）
   su cloud
