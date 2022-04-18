@@ -10,6 +10,21 @@ red(){
     echo -e "\033[31m\033[01m$1\033[0m"
 }
 
+#新建非root用户
+function add_user(){
+  #创建一个用户名为cloud的用户并指定bash为终端
+  sudo useradd -r -m -s /bin/bash cloud
+  #给用户cloud添加一个密码
+  sudo passwd cloud
+  #编辑用户权限
+  sudo chmod +w /etc/sudoers
+  sudo vim /etc/sudoers
+  #按i进入编辑模式，在User privilege specification的root一行下面加入cloud ALL=(ALL:ALL) ALL然后按esc后输入:wq保存并退出 vim 编辑器
+  #去掉w权限
+  sudo chmod -w /etc/sudoers
+  #切换到刚才创建的新用户（两次输入su cloud，输入密码不会显示）
+  su cloud
+}
 #初次编译
 function build_openwrt(){
   #安装编译依赖
@@ -94,24 +109,28 @@ start_menu(){
   blue  "4、编译完成后输出路径：bin/targets"
   green "====================================="
   echo
-  green " 1. 初次编译"
-  green " 2. 重新编译"
-  green " 3. 修复并编译(make clean)"
-  green " 4. 完全重新编译(make distclean)"
+  green " 1. 新建非root用户"
+  green " 2. 初次编译"
+  green " 3. 重新编译"
+  green " 4. 修复并编译(make clean)"
+  green " 5. 完全重新编译(make distclean)"
   blue " 0. 退出脚本"
   echo
   read -p "请输入数字:" num
   case "$num" in
   1)
-  build_openwrt
+  add_user
   ;;
   2)
-  rebuild_openwrt 
+  build_openwrt
   ;;
   3)
-  repair_build_openwrt
+  rebuild_openwrt 
   ;;
   4)
+  repair_build_openwrt
+  ;;
+  5)
   comre_build_openwrt
   ;;
   0)
