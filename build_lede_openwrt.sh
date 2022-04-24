@@ -39,6 +39,7 @@ function build_openwrt(){
   #下载源代码，更新 feeds 并选择配置
   git clone https://github.com/coolsnowwolf/lede
   cd lede
+  read -s -n1 -p "按任意键继续 ... " #此处将脚本暂停后面的命令继续运行，如果想添加其他插件，添加完成后再按任意键继续
   ./scripts/feeds update -a
   ./scripts/feeds install -a
   make menuconfig
